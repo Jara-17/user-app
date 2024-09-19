@@ -1,0 +1,15 @@
+.table-container {
+  @apply overflow-x-auto bg-white shadow-md rounded-lg w-full
+}
+
+.table-class {
+  @apply  table-auto w-full
+}
+
+.header-table {
+  @apply px-4 py-2 text-left text-white
+}
+
+.text {
+  @apply text-center text-2xl text-gray-700 font-semibold
+}

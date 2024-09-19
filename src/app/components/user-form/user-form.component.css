@@ -1,0 +1,15 @@
+.form-container {
+  @apply bg-white p-8 rounded-lg shadow-md w-full md:w-4/5
+}
+
+.label {
+  @apply block text-sm font-medium text-gray-700
+}
+
+.input {
+  @apply mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-800 focus:border-gray-800
+}
+
+.error {
+  @apply text-lg uppercase font-semibold bg-red-200 border-2 border-red-500 text-red-500 p-4 rounded-lg my-4
+}

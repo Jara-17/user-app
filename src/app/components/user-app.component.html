@@ -1,0 +1,25 @@
+<main class="container mx-auto p-4">
+  <section class="flex flex-col md:flex-row justify-between gap-8">
+    @if (isOpen) {
+      <div class="w-full">
+        <h2 class="title">Formulario de Registro</h2>
+        <user-form
+          (newUserEventEmitter)="addUser($event)"
+          [user]="userSelected"
+        />
+      </div>
+    }
+
+    <div class="w-full">
+      <div class="flex justify-between items-center">
+        <h2 class="title">{{ title }}</h2>
+        <button type="button" (click)="setOpen()" class="btn {{isOpen ? 'remove' : 'create'}} ">{{isOpen ? 'Cerrar Formulario' : 'Crear Usuario'}}</button>
+      </div>
+      <user
+        [users]="users"
+        (idUserEventEmitter)="removeUser($event)"
+        (selectedUserEventEmitter)="setSelectedUser($event)"
+      />
+    </div>
+  </section>
+</main>

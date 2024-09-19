@@ -1,0 +1,41 @@
+<div class="table-container">
+      <table class="table-class">
+        <thead class="bg-gray-800">
+          <tr>
+            <th class="header-table">Nombre</th>
+            <th class="header-table">Apellido</th>
+            <th class="header-table">Email</th>
+            <th class="header-table">Username</th>
+            <th class="header-table">Eliminar</th>
+            <th class="header-table">Actualizar</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (user of users; track $index) {
+          <tr class="border-b hover:bg-gray-100">
+            <td class="px-4 py-2">{{ user.name }}</td>
+            <td class="px-4 py-2">{{ user.lastname }}</td>
+            <td class="px-4 py-2">{{ user.email }}</td>
+            <td class="px-4 py-2">{{ user.username }}</td>
+            <td class="px-4 py-2">
+              <button type="button" class="btn remove" (click)="onRemove(user.id)">
+                Eliminar
+              </button>
+            </td>
+
+            <td class="px-4 py-2">
+              <button type="button" class="btn update" (click)="onSelectedUser(user)">
+                Actualizar
+              </button>
+            </td>
+          </tr>
+          } @empty {
+            <tr>
+              <td colspan="5" class="p-4">
+                <p class="text">No hay registros en el sistema</p>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>

@@ -1,0 +1,146 @@
+<div class="form-container">
+  <form class="space-y-4 w-full" (ngSubmit)="onSubmit(userForm)" #userForm="ngForm">
+    <div>
+      <label for="name" class="label"
+        >Nombre</label
+      >
+      <input
+        type="text"
+        id="name"
+        name="name"
+        placeholder="Ingrese el nombre del usuario"
+        class="input"
+        [(ngModel)]="user.name"
+        required
+        #name="ngModel"
+      />
+
+      @if(name.invalid && (name.dirty || name.touched)) {
+        @if (name.errors!['required']) {
+          <p class="error">El nombre es requerido</p>
+        }
+      }
+    </div>
+
+    <div>
+      <label for="lastname" class="label"
+        >Apellido</label
+      >
+      <input
+        type="text"
+        id="lastname"
+        name="lastname"
+        placeholder="Ingrese el apellido del usuario"
+        class="input"
+        [(ngModel)]="user.lastname"
+        required
+        #lastname="ngModel"
+      />
+
+      @if(lastname.invalid && (lastname.dirty || lastname.touched)) {
+        @if (lastname.errors!['required']) {
+          <p class="error">El apellido es requerido</p>
+        }
+      }
+    </div>
+
+    <div>
+      <label for="email" class="label"
+        >Email</label
+      >
+      <input
+        type="email"
+        id="email"
+        name="email"
+        placeholder="Ej: ejemplo@ejemplo.com"
+        class="input"
+        [(ngModel)]="user.email"
+        required
+        email
+        #email="ngModel"
+      />
+
+      @if(email.invalid && (email.dirty || email.touched)) {
+        @if (email.errors!['required']) {
+          <p class="error">El email es requerido</p>
+        }
+
+        @if (email.errors!['email']) {
+          <p class="error">El email no tiene el formato correcto</p>
+        }
+      }
+    </div>
+
+    <div>
+      <label for="username" class="label"
+        >Username</label
+      >
+      <input
+        type="text"
+        id="username"
+        name="username"
+        placeholder="Ej: fulanitodetal"
+        class="input"
+        [(ngModel)]="user.username"
+        minlength="8"
+        required
+        #username="ngModel"
+      />
+
+      @if(username.invalid && (username.dirty || username.touched)) {
+        @if (username.errors!['required']) {
+          <p class="error">El username es requerido</p>
+        }
+
+        @if (username.errors!['minlength']) {
+          <p class="error">El username debe tener al menos 8 caracteres!</p>
+        }
+      }
+    </div>
+
+    <div>
+      <label for="password" class="label"
+        >Password</label
+      >
+      <input
+        type="password"
+        id="password"
+        name="password"
+        placeholder="Ej: Oljncecb@oi_fbcpw87484asfEQef"
+        class="input"
+        [(ngModel)]="user.password"
+        minlength="6"
+        required
+        #password="ngModel"
+      />
+
+      @if(password.invalid && (password.dirty || password.touched)) {
+        @if (password.errors!['required']) {
+          <p class="error">El password es requerido</p>
+        }
+
+        @if (password.errors!['minlength']) {
+          <p class="error">El password debe tener al menos 6 caracteres</p>
+        }
+      }
+    </div>
+
+    <div class="flex justify-between items-center gap-8">
+      <button
+      [disabled]="userForm.invalid"
+        type="submit"
+        class="btn {{user.id !== '' ? 'update' : 'create'}} w-full"
+      >
+       {{user.id !== '' ? 'Actualizar': 'Crear'}} 
+      </button>
+
+      <button
+        type="submit"
+        class="btn w-full"
+        (click)="onClear(userForm)"
+      >
+       Limpiar
+      </button>
+    </div>
+  </form>
+</div>
