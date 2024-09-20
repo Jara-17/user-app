@@ -34,7 +34,7 @@
             </td>
 
             <td class="px-4 py-2">
-              <button type="button" class="btn update" (click)="onSelectedUser(user)">
+              <button type="button" class="btn update" [routerLink]="['/users/update', user.id]">
                 Actualizar
               </button>
             </td>

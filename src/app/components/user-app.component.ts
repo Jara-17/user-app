@@ -24,13 +24,20 @@ export class UserAppComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private sharingDtata: SharingDataService
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.userService.findAll().subscribe((users) => (this.users = users));
     this.addUser();
     this.removeUser();
+    this.findUserById();
+  }
+
+  findUserById() {
+    this.sharingDtata.findUserByIdEventEmitter.subscribe((id) => {
+      const user = this.users.find((user) => user.id === id);
+      this.sharingDtata.selectedUserEventEmitter.emit(user);
+    });
   }
 
   addUser(): void {
@@ -42,9 +49,9 @@ export class UserAppComponent implements OnInit {
       } else {
         this.users = [...this.users, { ...user, id: generateUniqueId() }];
       }
-      
-      this.router.navigate(['/users'], { state: {users: this.users} });
-      
+
+      this.router.navigate(['/users'], { state: { users: this.users } });
+
       Swal.fire({
         title: 'Guardado!',
         text: 'Usuario guardado con éxito!',
@@ -70,9 +77,13 @@ export class UserAppComponent implements OnInit {
             .remove(id)
             .subscribe((updatedUsers) => (this.users = updatedUsers));
 
-          this.router.navigate(['/users/create'], {skipLocationChange: true}).then(() => {
-            this.router.navigate(['/users'], { state: { users: this.users } });
-          });
+          this.router
+            .navigate(['/users/create'], { skipLocationChange: true })
+            .then(() => {
+              this.router.navigate(['/users'], {
+                state: { users: this.users },
+              });
+            });
 
           Swal.fire({
             title: 'Eliminado!',
