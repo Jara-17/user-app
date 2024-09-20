@@ -1,3 +1,13 @@
+<div class="flex justify-between items-center">
+  <h2 class="title">{{ title }}</h2>
+  <button
+    class="btn create"
+    [routerLink]="['/users/create']"
+  >
+    Crear Usuario
+  </button>
+</div>
+
 <div class="table-container">
       <table class="table-class">
         <thead class="bg-gray-800">
@@ -31,7 +41,7 @@
           </tr>
           } @empty {
             <tr>
-              <td colspan="5" class="p-4">
+              <td colspan="7" class="p-4">
                 <p class="text">No hay registros en el sistema</p>
               </td>
             </tr>

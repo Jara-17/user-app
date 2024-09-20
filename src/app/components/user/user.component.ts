@@ -1,25 +1,38 @@
-import { IUser } from '@/models/iuser';
 import { User } from '@/models/user';
-import { Component, EventEmitter, Input, Output, output } from '@angular/core';
-import Swal from 'sweetalert2';
+import { SharingDataService } from '@/services/sharing-data.service';
+import { UserService } from '@/services/user.service';
+import { Component, EventEmitter } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'user',
   standalone: true,
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './user.component.html',
   styleUrl: './user.component.css',
 })
 export class UserComponent {
-  @Input() users: User[] = [];
-  @Output() idUserEventEmitter: EventEmitter<string> = new EventEmitter();
-  @Output() selectedUserEventEmitter: EventEmitter<User> = new EventEmitter();
+  title: string = 'Listado de Usuarios';
+  users: User[] = [];
 
-  onRemove(id: string): void {
-    this.idUserEventEmitter.emit(id);
+  constructor(
+    private router: Router,
+    private userService: UserService,
+    private sharingData: SharingDataService
+  ) {
+    const currentNavigation = this.router.getCurrentNavigation();
+    if (currentNavigation && currentNavigation.extras.state) {
+      this.users = currentNavigation.extras.state['users'] || [];
+    } else {
+      this.userService.findAll().subscribe((users) => (this.users = users));
+    }
   }
 
-  onSelectedUser(user: IUser): void {
-    this.selectedUserEventEmitter.emit(user);
-  };
+  onRemove(id: string): void {
+    this.sharingData.idUserEventEmitter.emit(id);
+  }
+
+  onSelectedUser(user: User): void {
+    this.router.navigate(['/users/update', user.id], {state: {user}});
+  }
 }
