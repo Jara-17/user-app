@@ -42,12 +42,12 @@ export class UserAppComponent implements OnInit {
 
   addUser(): void {
     this.sharingDtata.newUserEventEmitter.subscribe((user) => {
-      if (user.id !== '') {
+      if (user.id === 0) {
         this.users = this.users.map((u) =>
           u.id === user.id ? { ...user } : u
         );
       } else {
-        this.users = [...this.users, { ...user, id: generateUniqueId() }];
+        this.users = [...this.users, { ...user, id: user.id + 1 }];
       }
 
       this.router.navigate(['/users'], { state: { users: this.users } });

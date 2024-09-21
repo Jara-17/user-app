@@ -9,7 +9,7 @@ import { generateUniqueId } from 'utils';
 export class UserService {
   private users: IUser[] = [
     {
-      id: generateUniqueId(),
+      id: 1,
       name: 'John',
       lastname: 'Doe',
       email: 'john.doe@example.com',
@@ -18,7 +18,7 @@ export class UserService {
     },
 
     {
-      id: generateUniqueId(),
+      id: 2,
       name: 'Jane',
       lastname: 'Smith',
       email: 'jane.smith@example.com',
@@ -27,7 +27,7 @@ export class UserService {
     },
 
     {
-      id: generateUniqueId(),
+      id: 3,
       name: 'Michael',
       lastname: 'Brown',
       email: 'michael.brown@example.com',
@@ -36,7 +36,7 @@ export class UserService {
     },
 
     {
-      id: generateUniqueId(),
+      id: 4,
       name: 'Emily',
       lastname: 'Davis',
       email: 'emily.davis@example.com',
@@ -45,7 +45,7 @@ export class UserService {
     },
 
     {
-      id: generateUniqueId(),
+      id: 5,
       name: 'Chris',
       lastname: 'Wilson',
       email: 'chris.wilson@example.com',
@@ -66,7 +66,7 @@ export class UserService {
   /**
    ** Método para eliminar un usuario
    * */
-  remove(id: string): Observable<IUser[]> {
+  remove(id: number): Observable<IUser[]> {
     this.users = this.users.filter((user) => user.id !== id);
     return of(this.users);
   }

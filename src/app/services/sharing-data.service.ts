@@ -6,8 +6,8 @@ import { EventEmitter, Injectable } from '@angular/core';
 })
 export class SharingDataService {
   private _newUserEventEmitter: EventEmitter<User> = new EventEmitter();
-  private _idUserEventEmitter: EventEmitter<string> = new EventEmitter();
-  private _findUserByIdEventEmitter: EventEmitter<string> = new EventEmitter();
+  private _idUserEventEmitter: EventEmitter<number> = new EventEmitter();
+  private _findUserByIdEventEmitter: EventEmitter<number> = new EventEmitter();
   private _selectedUserEventEmitter: EventEmitter<User> = new EventEmitter();
 
   constructor() {}
@@ -16,11 +16,11 @@ export class SharingDataService {
     return this._newUserEventEmitter;
   }
 
-  get idUserEventEmitter(): EventEmitter<string> {
+  get idUserEventEmitter(): EventEmitter<number> {
     return this._idUserEventEmitter;
   }
 
-  get findUserByIdEventEmitter(): EventEmitter<string> {
+  get findUserByIdEventEmitter(): EventEmitter<number> {
     return this._findUserByIdEventEmitter;
   }
 

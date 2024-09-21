@@ -131,9 +131,9 @@
       <button
       [disabled]="userForm.invalid"
         type="submit"
-        class="btn {{user.id !== '' ? 'update' : 'create'}} w-full"
+        class="btn {{user.id ? 'update' : 'create'}} w-full"
       >
-       {{user.id !== '' ? 'Actualizar': 'Crear'}} 
+       {{user.id ? 'Actualizar': 'Crear'}} 
       </button>
 
       <button

@@ -27,9 +27,9 @@ export class UserFormComponent implements OnInit {
     );
 
     this.route.paramMap.subscribe((params) => {
-      const id: string = params.get('id') || '';
+      const id: number = +(params.get('id') || '0');
 
-      if (id !== '') {
+      if (id > 0) {
         this.sharingData.findUserByIdEventEmitter.emit(id);
       }
     });

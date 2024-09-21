@@ -28,7 +28,7 @@ export class UserComponent {
     }
   }
 
-  onRemove(id: string): void {
+  onRemove(id: number): void {
     this.sharingData.idUserEventEmitter.emit(id);
   }
 
