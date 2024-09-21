@@ -1,6 +1,7 @@
 import { User } from '@/models/user';
 import { SharingDataService } from '@/services/sharing-data.service';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { UserService } from '@/services/user.service';
+import { Component, inject, OnInit} from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -13,24 +14,21 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class UserFormComponent implements OnInit {
   user: User;
+  private userService: UserService = inject(UserService);
+  private sharingData: SharingDataService = inject(SharingDataService);
 
   constructor(
-    private sharingData: SharingDataService,
     private route: ActivatedRoute
   ) {
     this.user = new User();
   }
 
   ngOnInit(): void {
-    this.sharingData.selectedUserEventEmitter.subscribe(
-      (user) => (this.user = user)
-    );
-
     this.route.paramMap.subscribe((params) => {
       const id: number = +(params.get('id') || '0');
 
       if (id > 0) {
-        this.sharingData.findUserByIdEventEmitter.emit(id);
+        this.userService.findById(id).subscribe(user => this.user = user);
       }
     });
   }

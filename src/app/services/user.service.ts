@@ -1,73 +1,52 @@
+
 import { IUser } from '@/models/iuser';
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { generateUniqueId } from 'utils';
+import { User } from '@/models/user';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import {Observable, of } from 'rxjs';
+import { env } from '@/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private users: IUser[] = [
-    {
-      id: 1,
-      name: 'John',
-      lastname: 'Doe',
-      email: 'john.doe@example.com',
-      username: 'johndoe',
-      password: 'password123',
-    },
-
-    {
-      id: 2,
-      name: 'Jane',
-      lastname: 'Smith',
-      email: 'jane.smith@example.com',
-      username: 'janesmith',
-      password: 'password123',
-    },
-
-    {
-      id: 3,
-      name: 'Michael',
-      lastname: 'Brown',
-      email: 'michael.brown@example.com',
-      username: 'michaelbrown',
-      password: 'password123',
-    },
-
-    {
-      id: 4,
-      name: 'Emily',
-      lastname: 'Davis',
-      email: 'emily.davis@example.com',
-      username: 'emilydavis',
-      password: 'password123',
-    },
-
-    {
-      id: 5,
-      name: 'Chris',
-      lastname: 'Wilson',
-      email: 'chris.wilson@example.com',
-      username: 'chriswilson',
-      password: 'password123',
-    },
-  ];
+  private http: HttpClient = inject(HttpClient);
+  private apiUrl: string = env.apiUrl;
 
   constructor() {}
 
   /**
    ** Método para obtener todos los usuarios
    * */
-  findAll(): Observable<IUser[]> {
-    return of(this.users);
+  findAll(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.apiUrl}/users`);
+  }
+
+  /**
+   ** Método para obtener un usuario por su id
+   * */
+  findById(id: number): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}/users/${id}`);
+  }
+
+  /**
+   ** Método para crear un usuario
+   * */
+  create(user: User): Observable<User> {
+    return this.http.post<User>(`${this.apiUrl}/users`, user);
+  }
+
+  /**
+   ** Método para actualizar un usuario
+   * */
+  update(user: User): Observable<User> {
+    return this.http.put<User>(`${this.apiUrl}/users/${user.id}`, user);
   }
 
   /**
    ** Método para eliminar un usuario
    * */
-  remove(id: number): Observable<IUser[]> {
-    this.users = this.users.filter((user) => user.id !== id);
-    return of(this.users);
+  remove(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/users/${id}`);
   }
 }

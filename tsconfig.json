@@ -26,7 +26,8 @@
       "@/db/*": ["db/*"],
       "@/pages/*": ["pages/*"],
       "@/services/*": ["services/*"],
-      "@/store/*": ["store/*"]
+      "@/store/*": ["store/*"],
+      "@/environments/*": ["../environments/*"]
     },
   },
   "angularCompilerOptions": {

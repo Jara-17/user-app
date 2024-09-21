@@ -3,17 +3,23 @@ import { UserService } from '@/services/user.service';
 import { Component, OnInit } from '@angular/core';
 import { UserComponent } from './user/user.component';
 import { UserFormComponent } from './user-form/user-form.component';
-import { generateUniqueId } from 'utils';
 import { User } from '@/models/user';
 import Swal from 'sweetalert2';
 import { Router, RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './navbar/navbar.component';
 import { SharingDataService } from '@/services/sharing-data.service';
+import { CustomFooterComponent } from './custom-footer/custom-footer.component';
 
 @Component({
   selector: 'user-app',
   standalone: true,
-  imports: [UserComponent, UserFormComponent, RouterOutlet, NavbarComponent],
+  imports: [
+    UserComponent,
+    UserFormComponent,
+    RouterOutlet,
+    NavbarComponent,
+    CustomFooterComponent,
+  ],
   templateUrl: './user-app.component.html',
   styleUrl: './user-app.component.css',
 })
@@ -42,15 +48,20 @@ export class UserAppComponent implements OnInit {
 
   addUser(): void {
     this.sharingDtata.newUserEventEmitter.subscribe((user) => {
-      if (user.id === 0) {
-        this.users = this.users.map((u) =>
-          u.id === user.id ? { ...user } : u
-        );
+      if (user.id > 0) {
+        this.userService.update(user).subscribe((userUpdated) => {
+          this.users = this.users.map((u) =>
+            u.id === userUpdated.id ? { ...userUpdated } : u
+          );
+        });
       } else {
-        this.users = [...this.users, { ...user, id: user.id + 1 }];
+        this.userService.create(user).subscribe((userNew) => {
+          console.log(userNew);
+          this.users = [...this.users, { ...userNew }];
+        });
       }
 
-      this.router.navigate(['/users'], { state: { users: this.users } });
+      this.router.navigate(['/users']);
 
       Swal.fire({
         title: 'Guardado!',
@@ -73,22 +84,18 @@ export class UserAppComponent implements OnInit {
         cancelButtonText: 'Cancelar',
       }).then((result) => {
         if (result.isConfirmed) {
-          this.userService
-            .remove(id)
-            .subscribe((updatedUsers) => (this.users = updatedUsers));
-
-          this.router
-            .navigate(['/users/create'], { skipLocationChange: true })
-            .then(() => {
-              this.router.navigate(['/users'], {
-                state: { users: this.users },
+          this.userService.remove(id).subscribe(() => {
+            this.router
+              .navigate(['/users/create'], { skipLocationChange: true })
+              .then(() => {
+                this.router.navigate(['/users']);
               });
-            });
 
-          Swal.fire({
-            title: 'Eliminado!',
-            text: 'El usuario se ha eliminado correctamente.',
-            icon: 'success',
+            Swal.fire({
+              title: 'Eliminado!',
+              text: 'El usuario se ha eliminado correctamente.',
+              icon: 'success',
+            });
           });
         }
       });
