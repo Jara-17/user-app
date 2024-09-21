@@ -1,5 +1,3 @@
-
-import { IUser } from '@/models/iuser';
 import { User } from '@/models/user';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
