@@ -13,14 +13,11 @@
         placeholder="Ingrese el nombre del usuario"
         class="input"
         [(ngModel)]="user.name"
-        required
         #name="ngModel"
       />
 
-      @if(name.invalid && (name.dirty || name.touched)) {
-        @if (name.errors!['required']) {
-          <p class="error">El nombre es requerido</p>
-        }
+      @if (errors.name) {
+        <p class="error">{{errors.name.replace("name", "Nombre")}}</p>
       }
     </div>
 
@@ -35,14 +32,11 @@
         placeholder="Ingrese el apellido del usuario"
         class="input"
         [(ngModel)]="user.lastname"
-        required
         #lastname="ngModel"
       />
 
-      @if(lastname.invalid && (lastname.dirty || lastname.touched)) {
-        @if (lastname.errors!['required']) {
-          <p class="error">El apellido es requerido</p>
-        }
+      @if (errors.lastname) {
+        <p class="error">{{errors.lastname.replace("lastname", "Apellido")}}</p>
       }
     </div>
 
@@ -57,19 +51,11 @@
         placeholder="Ej: ejemplo@ejemplo.com"
         class="input"
         [(ngModel)]="user.email"
-        required
-        email
         #email="ngModel"
       />
 
-      @if(email.invalid && (email.dirty || email.touched)) {
-        @if (email.errors!['required']) {
-          <p class="error">El email es requerido</p>
-        }
-
-        @if (email.errors!['email']) {
-          <p class="error">El email no tiene el formato correcto</p>
-        }
+      @if (errors.email) {
+        <p class="error">{{errors.email}}</p>
       }
     </div>
 
@@ -84,19 +70,11 @@
         placeholder="Ej: fulanitodetal"
         class="input"
         [(ngModel)]="user.username"
-        minlength="8"
-        required
         #username="ngModel"
       />
 
-      @if(username.invalid && (username.dirty || username.touched)) {
-        @if (username.errors!['required']) {
-          <p class="error">El username es requerido</p>
-        }
-
-        @if (username.errors!['minlength']) {
-          <p class="error">El username debe tener al menos 8 caracteres!</p>
-        }
+      @if (errors.username) {
+        <p class="error">{{errors.username}}</p>
       }
     </div>
 
@@ -111,25 +89,16 @@
         placeholder="Ej: Oljncecb@oi_fbcpw87484asfEQef"
         class="input"
         [(ngModel)]="user.password"
-        minlength="6"
-        required
         #password="ngModel"
       />
 
-      @if(password.invalid && (password.dirty || password.touched)) {
-        @if (password.errors!['required']) {
-          <p class="error">El password es requerido</p>
-        }
-
-        @if (password.errors!['minlength']) {
-          <p class="error">El password debe tener al menos 6 caracteres</p>
-        }
+      @if (errors.password) {
+        <p class="error">{{errors.password}}</p>
       }
     </div>
 
     <div class="flex justify-between items-center gap-8">
       <button
-      [disabled]="userForm.invalid"
         type="submit"
         class="btn {{user.id ? 'update' : 'create'}} w-full"
       >

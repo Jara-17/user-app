@@ -27,6 +27,7 @@
       "@/pages/*": ["pages/*"],
       "@/services/*": ["services/*"],
       "@/store/*": ["store/*"],
+      "@/interfaces/*": ["models/interfaces/*"],
       "@/environments/*": ["../environments/*"]
     },
   },

@@ -14,6 +14,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class UserFormComponent implements OnInit {
   user: User;
+  errors: any = {};
+
   private userService: UserService = inject(UserService);
   private sharingData: SharingDataService = inject(SharingDataService);
 
@@ -24,6 +26,8 @@ export class UserFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.sharingData.formUserErrorsEventEmitter.subscribe(errors => this.errors = errors);
+    
     this.route.paramMap.subscribe((params) => {
       const id: number = +(params.get('id') || '0');
 
@@ -34,11 +38,9 @@ export class UserFormComponent implements OnInit {
   }
 
   onSubmit(userForm: NgForm): void {
-    if (userForm.valid) {
-      this.sharingData.newUserEventEmitter.emit(this.user);
-      console.log(this.user);
-    }
-
+    this.sharingData.newUserEventEmitter.emit(this.user);
+    console.log(this.user);
+    
     userForm.reset();
     userForm.resetForm();
   }

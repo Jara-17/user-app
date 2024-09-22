@@ -1,4 +1,4 @@
-import { IUser } from '@/models/iuser';
+import { IUser } from '@/models/interfaces/iuser';
 import { UserService } from '@/services/user.service';
 import { Component, OnInit } from '@angular/core';
 import { UserComponent } from './user/user.component';
@@ -49,24 +49,57 @@ export class UserAppComponent implements OnInit {
   addUser(): void {
     this.sharingDtata.newUserEventEmitter.subscribe((user) => {
       if (user.id > 0) {
-        this.userService.update(user).subscribe((userUpdated) => {
-          this.users = this.users.map((u) =>
-            u.id === userUpdated.id ? { ...userUpdated } : u
-          );
-          this.router.navigate(['/users'], { state: { users: this.users } });
+        this.userService.update(user).subscribe({
+          next: (userUpdated) => {
+            this.users = this.users.map((u) =>
+              u.id === userUpdated.id ? { ...userUpdated } : u
+            );
+            this.router.navigate(['/users'], { state: { users: this.users } });
+            Swal.fire({
+              title: 'Usuario Actualizado!',
+              text: 'Usuario actualizado con éxito!',
+              icon: 'success',
+            });
+          },
+
+          error: (err) => {
+            if (err.status === 400) {
+              console.log(err.status);
+              this.sharingDtata.formUserErrorsEventEmitter.emit(err.error);
+              Swal.fire({
+                title: 'Ha Ocurrido un Error!',
+                text: 'Se ha producido un error al actualizar el usuario!',
+                icon: 'error',
+              });
+            }
+          },
         });
       } else {
-        this.userService.create(user).subscribe((userNew) => {
-          this.users = [...this.users, { ...userNew }];
-          this.router.navigate(['/users'], { state: { users: this.users } });
+        this.userService.create(user).subscribe({
+          next: (userNew) => {
+            this.users = [...this.users, { ...userNew }];
+            this.router.navigate(['/users'], { state: { users: this.users } });
+            Swal.fire({
+              title: 'Nuevo Usuario Creado!',
+              text: 'Usuario creado con éxito!',
+              icon: 'success',
+            });
+          },
+          
+          error: (err) => {
+            if (err.status === 400) {
+              console.log(err.status);
+              this.sharingDtata.formUserErrorsEventEmitter.emit(err.error);
+              Swal.fire({
+                title: 'Ha Ocurrido un Error!',
+                text: 'Se ha producido un error al crear el usuario!',
+                icon: 'error',
+              });
+            }
+          },
         });
       }
 
-      Swal.fire({
-        title: 'Guardado!',
-        text: 'Usuario guardado con éxito!',
-        icon: 'success',
-      });
     });
   }
 
@@ -84,7 +117,7 @@ export class UserAppComponent implements OnInit {
       }).then((result) => {
         if (result.isConfirmed) {
           this.userService.remove(id).subscribe(() => {
-            this.users = this.users.filter(user => user.id !== id);
+            this.users = this.users.filter((user) => user.id !== id);
             this.router
               .navigate(['/users/create'], { skipLocationChange: true })
               .then(() => {
