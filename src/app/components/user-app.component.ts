@@ -53,15 +53,14 @@ export class UserAppComponent implements OnInit {
           this.users = this.users.map((u) =>
             u.id === userUpdated.id ? { ...userUpdated } : u
           );
+          this.router.navigate(['/users'], { state: { users: this.users } });
         });
       } else {
         this.userService.create(user).subscribe((userNew) => {
-          console.log(userNew);
           this.users = [...this.users, { ...userNew }];
+          this.router.navigate(['/users'], { state: { users: this.users } });
         });
       }
-
-      this.router.navigate(['/users']);
 
       Swal.fire({
         title: 'Guardado!',
@@ -85,10 +84,13 @@ export class UserAppComponent implements OnInit {
       }).then((result) => {
         if (result.isConfirmed) {
           this.userService.remove(id).subscribe(() => {
+            this.users = this.users.filter(user => user.id !== id);
             this.router
               .navigate(['/users/create'], { skipLocationChange: true })
               .then(() => {
-                this.router.navigate(['/users']);
+                this.router.navigate(['/users'], {
+                  state: { users: this.users },
+                });
               });
 
             Swal.fire({
